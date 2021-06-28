@@ -1,0 +1,15 @@
+[package]
+name = "harmonii"
+version = "0.1.0"
+authors = ["AlexandraAlter <alexandra.alter@protonmail.com>"]
+edition = "2018"
+description = "A general purpose Discord bot"
+readme = "README.md"
+repository = "https://github.com/AlexandraAlter/harmonii"
+license-file = "LICENSE.txt"
+
+[dependencies]
+serenity = "~0.10"
+tokio = { version = "~1.7", features = ["macros", "rt-multi-thread"] }
+toml = "~0.4.2"
+clap = "~2.33"
