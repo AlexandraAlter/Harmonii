@@ -1,2 +1,2 @@
-# RoleBot
-A role-assigning, message-deleting Discord bot.
+# Harmonii
+A general-purpose Discord bot.
