@@ -1,29 +1,36 @@
+use std::fs;
 use std::path::Path;
 
-use serde_derive::{Serialize, Deserialize};
+use serde_derive::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize)]
-struct Config {
-    key: String,
-    prefix: String,
-    roles: Vec<Role>,
+use serenity::prelude::*;
+
+pub struct ConfigContainer;
+
+impl TypeMapKey for ConfigContainer {
+    type Value = Config;
 }
 
-#[derive(Serialize, Deserialize)]
-struct Role {
-    name: String,
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Config {
+    pub token: String,
+    pub prefix: String,
+    pub roles: Vec<Role>,
 }
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Role {
+    pub name: String,
+}
 
 impl Config {
-    fn from_file(path: Path): Config {
+    pub fn from_file(path: &Path) -> Config {
         let data = fs::read_to_string(path).expect("Unable to read file");
-        println!("{}", data);
-        let config: Config = toml::from_str(data).unwrap();
-        return config
+        let config: Config = toml::from_str(&data).expect("Unable to parse TOML");
+        return config;
     }
 
-    fn save(&self) {
+    pub fn save(&self) {
         let data = toml::to_string(&self).unwrap();
         fs::write("/tmp/foo", data).expect("Unable to write file");
     }

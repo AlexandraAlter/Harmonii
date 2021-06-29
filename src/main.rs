@@ -1,32 +1,20 @@
-use serenity::async_trait;
-use serenity::client::{Client, Context, EventHandler};
-use serenity::framework::standard::{
-    macros::{command, group},
-    CommandResult, StandardFramework,
+use std::path::Path;
+
+use serenity::{
+    client::Client,
+    framework::standard::StandardFramework,
 };
-use serenity::model::channel::Message;
-
-use clap::{App, Arg, SubCommand};
-
-use std::env;
+use clap::{App, Arg};
 
 mod conf;
+mod role;
+mod messaging;
+mod cleaning;
 
-#[group]
-#[commands(ping)]
-struct General;
-
-struct Handler;
-
-#[async_trait]
-impl EventHandler for Handler {}
-
-#[command]
-async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(ctx, "Pong!").await?;
-
-    Ok(())
-}
+use conf::*;
+use role::*;
+use messaging::*;
+use cleaning::*;
 
 #[tokio::main]
 async fn main() {
@@ -42,20 +30,26 @@ async fn main() {
         )
         .get_matches();
 
-    let config_file = Path::new(matches.value_of("config").unwrap())
-    let config = conf.Config.from_file(config_file);
+    let config_file = Path::new(matches.value_of("config").unwrap());
+    let config = Config::from_file(config_file);
 
     let framework = StandardFramework::new()
-        .configure(|c| c.prefix(config.prefix))
-        .group(&GENERAL_GROUP);
+        .configure(|c| c.prefix(&config.prefix))
+        .group(&MESSAGING_GROUP)
+        .group(&CLEANING_GROUP);
 
-    let mut client = Client::builder(config.token)
-        .event_handler(Handler)
+    let mut client = Client::builder(&config.token)
+        .event_handler(role::RoleHandler)
         .framework(framework)
         .await
         .expect("Error creating client");
 
+    {
+        let mut data = client.data.write().await;
+        data.insert::<ConfigContainer>(config);
+    }
+
     if let Err(why) = client.start().await {
-        println!("An error occurred while running the client: {:?}", why);
+        println!("Client error: {:?}", why);
     }
 }
