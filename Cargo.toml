@@ -2,16 +2,18 @@
 name = "harmonii"
 version = "0.1.0"
 authors = ["AlexandraAlter <alexandra.alter@protonmail.com>"]
-edition = "2018"
-description = "A general purpose Discord bot"
+edition = "2021"
+description = "A general-purpose, low-overhead Discord bot"
 readme = "README.md"
 repository = "https://github.com/AlexandraAlter/harmonii"
 license-file = "LICENSE.txt"
 
 [dependencies]
-serenity = "~0.10"
-tokio = { version = "~1.7", features = ["macros", "rt-multi-thread"] }
-toml = "~0.4.2"
+serenity = { version = "~0.10", features = ["cache", "framework", "standard_framework", "rustls_backend"] }
+tokio = { version = "~1.16", features = ["macros", "signal", "rt-multi-thread"] }
+tracing = "~0.1"
+tracing-subscriber = "~0.3"
+toml = "~0.5"
 clap = "~2.33"
 serde = "*"
 serde_derive = "*"
