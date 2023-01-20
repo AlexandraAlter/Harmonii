@@ -2,10 +2,9 @@ use serenity::{
     async_trait,
     client::{Context, EventHandler},
     model::{
-        channel::{Message, Reaction, ReactionType},
+        channel::{Reaction, ReactionType},
         event::ResumedEvent,
         gateway::Ready,
-        guild::Member,
     },
 };
 use tracing::{error, info};

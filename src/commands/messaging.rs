@@ -13,7 +13,7 @@ use serenity::{
 struct Messaging;
 
 #[command("move")]
-pub async fn move_msg(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
+pub async fn move_msg(_ctx: &Context, _msg: &Message, _args: Args) -> CommandResult {
     Ok(())
 }
 

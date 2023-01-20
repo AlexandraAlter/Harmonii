@@ -5,7 +5,6 @@ use serenity::{
         Args, CommandResult,
     },
     model::channel::Message,
-    utils::{content_safe, ContentSafeOptions},
 };
 
 #[group]

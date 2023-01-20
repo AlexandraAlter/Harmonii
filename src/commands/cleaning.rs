@@ -12,7 +12,7 @@ use serenity::{
 struct Cleaning;
 
 #[command]
-pub async fn clean(ctx: &Context, msg: &Message, args: Args) -> CommandResult {
+pub async fn clean(_ctx: &Context, _msg: &Message, _args: Args) -> CommandResult {
     Ok(())
 }
 
